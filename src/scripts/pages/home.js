@@ -1,6 +1,6 @@
 import 'regenerator-runtime/runtime';
 import recipesFactory from '../factories/recipesFactory';
-import { customFetch } from '../utils/helpers';
+import { createGenericElement, customFetch } from '../utils/helpers';
 import '../../css/home.css';
 
 async function getRecipes() {
@@ -17,7 +17,12 @@ async function displayRecipes(recipes) {
     recipesSection.appendChild(recipeCard);
   });
 }
-
+const searchBar = createGenericElement('input', '', 'search-bar', [
+  { name: 'type', value: 'text' },
+  { name: 'placeholder', value: 'Rechercher une recette' },
+  { name: 'id', value: 'search-bar' },
+]);
+document.querySelector('.search-section').appendChild(searchBar);
 export default async function init() {
   const { recipes } = await getRecipes();
   displayRecipes(recipes);

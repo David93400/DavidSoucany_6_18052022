@@ -1,10 +1,12 @@
 import { createGenericElement } from '../utils/helpers';
 
 export default function recipesFactory(data) {
-  const { description, ingredients, name, time } = data;
+  const { description, ingredients, name, time, img } = data;
   function getRecipeCardDOM() {
-    const timeIcon = createGenericElement('i', null, 'fa-solid fa-clock');
-    const recipeImg = createGenericElement('img', '', 'recipe-img');
+    const timeIcon = createGenericElement('i', null, 'fa-regular fa-clock');
+    const recipeImg = createGenericElement('img', '', 'recipe-img', [
+      { name: 'src', value: `./assets/images/${img}` },
+    ]);
     const recipeName = createGenericElement('h2', name, 'recipe-name');
     const recipeDescription = createGenericElement(
       'p',

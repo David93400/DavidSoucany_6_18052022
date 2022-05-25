@@ -1,16 +1,18 @@
 body {
+  margin: 0;
+  padding: 0;
   font-family: 'Open Sans', sans-serif;
-  font-size: 14px;
-  line-height: 1.42857143;
-  color: #333;
   background-color: #fff;
 }
 header {
+  margin-top: 20px;
   padding: 10px;
   display: flex;
   justify-content: center;
 }
-
+header img {
+  width: 320px;
+}
 li {
   list-style: none;
 }
@@ -18,24 +20,37 @@ li {
   margin: 10px;
 }
 main {
-  padding: 10px;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
-  grid-gap: 20px;
+  grid-gap: 30px;
+}
+i {
+  font-size: 23px;
+  margin-right: 10px;
+}
+.recipe-time {
+  font-size: 20px;
+  font-weight: 600;
+  margin: 5px;
+}
+.recipe-name {
+  font-size: 20px;
+  font-weight: normal;
 }
 .recipe-card {
   margin: 10px;
   border-radius: 5px;
   background-color: rgb(231, 231, 231);
+  height: 440px;
 }
 .recipe-img {
   width: 100%;
-  height: 180px;
+  height: 220px;
   border-radius: 5px;
   background-color: rgb(199, 190, 190);
 }
 .recipe-header {
-  margin: 0px 15px;
+  margin: 0px 20px 5px 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -46,16 +61,42 @@ main {
 }
 .recipe-description {
   font-size: 0.8rem;
-  margin: 0px 10px;
-  max-height: 110px;
+  margin: 0px 10px 20px 10px;
+  max-height: 150px;
+  text-overflow: ellipsis;
+  overflow: auto;
+}
+.recipe-ingredients {
+  margin: 0px 20px;
+  font-size: 0.8rem;
+}
+.recipe-ingredient {
+  font-size: 0.8rem;
   text-overflow: ellipsis;
   overflow: hidden;
 }
-
-.recipe-ingredient {
-  font-size: 0.8rem;
-  margin-left: 10px;
-  max-height: 110px;
-  text-overflow: ellipsis;
-  overflow: hidden;
+.recipes-section {
+  margin: 50px;
+}
+.search-section {
+  display: flex;
+  justify-content: center;
+}
+.search-bar {
+  margin: 0px 60px;
+  padding: 10px;
+  border-radius: 5px;
+  height: 60px;
+  width: 100%;
+  border: none;
+  background-color: rgb(231, 231, 231);
+  box-sizing: content-box;
+}
+.search-bar::placeholder {
+  color: rgb(184, 182, 182);
+  padding-left: 15px;
+  font-size: 17px;
+}
+.recipe-img {
+  object-fit: cover;
 }
