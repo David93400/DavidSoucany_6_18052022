@@ -1,3 +1,8 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
 body {
   margin: 0;
   padding: 0;
@@ -62,7 +67,7 @@ i {
 .recipe-description {
   font-size: 0.8rem;
   margin: 0px 10px 20px 10px;
-  max-height: 150px;
+  max-height: 120px;
   text-overflow: ellipsis;
   overflow: auto;
 }
@@ -87,7 +92,6 @@ i {
   padding: 10px;
   border-radius: 5px;
   height: 60px;
-  width: 100%;
   border: none;
   background-color: rgb(231, 231, 231);
   box-sizing: content-box;
@@ -108,4 +112,26 @@ i {
   display: flex;
   justify-content: start;
   margin: 20px 60px 0px 60px;
+}
+select {
+  appearance: none;
+  background-color: rgb(231, 231, 231);
+  border: none;
+  padding: 0 1em 0 0;
+  margin-right: 15px;
+  width: 15%;
+  height: 70px;
+  font-family: inherit;
+  font-size: inherit;
+  cursor: inherit;
+  line-height: inherit;
+  border: 1px solid #ccc;
+  outline: none;
+}
+select::-ms-expand {
+  display: none;
+}
+
+.select-ingrédient {
+  background-color: aqua;
 }

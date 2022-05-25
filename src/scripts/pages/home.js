@@ -1,8 +1,14 @@
 import 'regenerator-runtime/runtime';
 import recipesFactory from '../factories/recipesFactory';
-import { createGenericElement, customFetch } from '../utils/helpers';
+import {
+  createGenericElement,
+  customFetch,
+  recipesConstants,
+} from '../utils/helpers';
 import '../../css/home.css';
-
+recipesConstants.forEach((type) => {
+  console.log(type);
+});
 async function getRecipes() {
   const data = await customFetch('./data/recipes.json');
   console.log(data.recipes);
@@ -17,53 +23,29 @@ async function displayRecipes(recipes) {
     recipesSection.appendChild(recipeCard);
   });
 }
-async function getIngredientsList(recipes) {
-  const ingredientsList = recipes.reduce((acc, recipe) => {
-    recipe.ingredients.forEach((ingredient) => {
-      if (!acc.includes(ingredient.ingredient)) {
-        acc.push(ingredient.ingredient);
+const getList = (recipes, type) => {
+  console.log(type);
+  const list = recipes.reduce((acc, recipe) => {
+    if (type === 'appliance') {
+      if (!acc.includes(recipe[type])) {
+        acc.push(recipe[type]);
+      }
+      return acc;
+    }
+    recipe[type].forEach((option) => {
+      if (!acc.includes(option.ingredient || option)) {
+        acc.push(option.ingredient || option);
       }
     });
     return acc;
   }, []);
-  ingredientsList.forEach((ingredient) => {
-    const selectIngredientsOption = createGenericElement('option', ingredient);
-    document
-      .querySelector('.select-ingredients')
-      .appendChild(selectIngredientsOption);
+  list.forEach((option) => {
+    const selectOption = createGenericElement('option', option);
+    document.querySelector(`.select-${type}`).appendChild(selectOption);
   }, []);
-  return ingredientsList;
-}
-async function getAppareilsList(recipes) {
-  const appareilsList = recipes.reduce((acc, recipe) => {
-    if (!acc.includes(recipe.appliance)) {
-      acc.push(recipe.appliance);
-    }
-    return acc;
-  }, []);
-  appareilsList.forEach((appareil) => {
-    const selectAppareilsOption = createGenericElement('option', appareil);
-    document
-      .querySelector('.select-appareils')
-      .appendChild(selectAppareilsOption);
-  }, []);
-  return appareilsList;
-}
-async function getUstensilsList(recipes) {
-  const ustensilsList = recipes.reduce((acc, recipe) => {
-    if (!acc.includes(recipe.ustensils)) {
-      acc.push(recipe.ustensils);
-    }
-    return acc;
-  }, []);
-  ustensilsList.forEach((ustensil) => {
-    const selectUstensilsOption = createGenericElement('option', ustensil);
-    document
-      .querySelector('.select-ustensils')
-      .appendChild(selectUstensilsOption);
-  }, []);
-  return ustensilsList;
-}
+  return list;
+};
+
 const selectIngredientsDisplay = createGenericElement('option', 'Ingrédients');
 const selectAppareilsDisplay = createGenericElement('option', 'Appareils');
 const selectUtensilsDisplay = createGenericElement('option', 'Ustensiles');
@@ -82,8 +64,9 @@ const selectIngredients = createGenericElement(
   '',
   'select-ingredients'
 );
-const selectAppareils = createGenericElement('select', '', 'select-appareils');
+const selectAppareils = createGenericElement('select', '', 'select-appliance');
 const selectUtensils = createGenericElement('select', '', 'select-ustensils');
+
 selectSection.appendChild(selectIngredients);
 selectSection.appendChild(selectAppareils);
 selectSection.appendChild(selectUtensils);
@@ -94,9 +77,7 @@ selectUtensils.appendChild(selectUtensilsDisplay);
 
 export default async function init() {
   const { recipes } = await getRecipes();
-  getIngredientsList(recipes);
-  getAppareilsList(recipes);
-  getUstensilsList(recipes);
+  recipesConstants.map((type) => getList(recipes, type));
   displayRecipes(recipes);
 }
 
