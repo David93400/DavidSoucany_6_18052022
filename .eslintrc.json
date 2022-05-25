@@ -8,6 +8,7 @@
     "ecmaVersion": "latest",
     "sourceType": "module"
   },
+  "ignorePatterns": ["./public/home.bundle.js"],
   "rules": {
     "no-debugger": 2,
     "no-duplicate-imports": 2,

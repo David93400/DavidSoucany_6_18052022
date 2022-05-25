@@ -12,4 +12,35 @@ const customFetch = async (url, method = 'GET', headers = {}, body = '') => {
       "Une erreur s'est produite lors du chargement des données, veuillez réessayer plus tard");
   }
 };
-export default customFetch;
+
+// create DOM element
+/**
+ *
+ * @param {*} type(balise)
+ * @param {*} text(contenu)
+ * @param {*} className(style)
+ * @param {*} attributes(src, alt, index, etc...)
+ * @returns
+ */
+const createGenericElement = (
+  type,
+  text = '',
+  className = '',
+  attributes = []
+) => {
+  const element = document.createElement(type);
+  if (text) {
+    element.textContent = text;
+  }
+  if (className) {
+    element.className = className;
+  }
+  if (attributes) {
+    attributes.forEach((attribute) => {
+      element.setAttribute(attribute.name, attribute.value);
+    });
+  }
+  return element;
+};
+
+export { customFetch, createGenericElement };
