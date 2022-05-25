@@ -100,3 +100,12 @@ i {
 .recipe-img {
   object-fit: cover;
 }
+.search-section {
+  display: flex;
+  flex-direction: column;
+}
+.select-section {
+  display: flex;
+  justify-content: start;
+  margin: 20px 60px 0px 60px;
+}
