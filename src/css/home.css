@@ -114,24 +114,52 @@ i {
   margin: 20px 60px 0px 60px;
 }
 select {
-  appearance: none;
-  background-color: rgb(231, 231, 231);
+  color: white;
+  border-radius: 5px;
   border: none;
-  padding: 0 1em 0 0;
+  padding: 0 10px;
   margin-right: 15px;
-  width: 15%;
-  height: 70px;
+  width: 17%;
+  height: 55px;
   font-family: inherit;
   font-size: inherit;
   cursor: inherit;
   line-height: inherit;
-  border: 1px solid #ccc;
-  outline: none;
 }
 select::-ms-expand {
   display: none;
 }
-
-.select-ingrédient {
-  background-color: aqua;
+.select-ingredients {
+  background-color: rgb(50, 130, 247);
+}
+.select-appliance {
+  background-color: rgb(105, 217, 164);
+}
+.select-ustensils {
+  background-color: rgb(237, 100, 84);
+}
+.tag-section {
+  display: flex;
+  margin: 20px 60px 0px 60px;
+}
+.tag {
+  font-size: 12px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  height: 25px;
+  margin-right: 15px;
+  padding: 15px;
+  border-radius: 5px;
+  background-color: rgb(231, 231, 231);
+  color: #fff;
+}
+.select-appliance-tag {
+  background-color: rgb(105, 217, 164);
+}
+.select-ingredients-tag {
+  background-color: rgb(50, 130, 247);
+}
+.select-ustensils-tag {
+  background-color: rgb(237, 100, 84);
 }
