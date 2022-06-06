@@ -1,4 +1,3 @@
-const recipesConstants = ['appliance', 'ustensils', 'ingredients'];
 const customFetch = async (url, method = 'GET', headers = {}, body = '') => {
   try {
     const response = await fetch(url, {
@@ -44,4 +43,4 @@ const createGenericElement = (
   return element;
 };
 
-export { customFetch, createGenericElement, recipesConstants };
+export { customFetch, createGenericElement };

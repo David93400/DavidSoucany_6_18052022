@@ -74,6 +74,9 @@ i {
 .recipe-ingredients {
   margin: 0px 20px;
   font-size: 0.8rem;
+  max-height: 120px;
+  text-overflow: ellipsis;
+  overflow: auto;
 }
 .recipe-ingredient {
   font-size: 0.8rem;
@@ -109,8 +112,6 @@ i {
   flex-direction: column;
 }
 .select-section {
-  display: flex;
-  justify-content: start;
   margin: 20px 60px 0px 60px;
 }
 select {
@@ -119,7 +120,8 @@ select {
   border: none;
   padding: 0 10px;
   margin-right: 15px;
-  width: 17%;
+  margin-bottom: 15px;
+  width: auto;
   height: 55px;
   font-family: inherit;
   font-size: inherit;
@@ -142,24 +144,31 @@ select::-ms-expand {
   display: flex;
   margin: 20px 60px 0px 60px;
 }
-.tag {
+.tag-container {
   font-size: 12px;
-  display: inline-flex;
-  justify-content: center;
+  display: flex;
   align-items: center;
   height: 25px;
   margin-right: 15px;
-  padding: 15px;
+  padding: 10px;
   border-radius: 5px;
   background-color: rgb(231, 231, 231);
   color: #fff;
 }
-.select-appliance-tag {
-  background-color: rgb(105, 217, 164);
+.tag-container i {
+  font-size: 15px;
+  cursor: pointer;
+  margin: 0;
 }
-.select-ingredients-tag {
+.tag {
+  margin-right: 5px;
+}
+.tag-ingredients {
   background-color: rgb(50, 130, 247);
 }
-.select-ustensils-tag {
+.tag-appliance {
+  background-color: rgb(105, 217, 164);
+}
+.tag-ustensils {
   background-color: rgb(237, 100, 84);
 }

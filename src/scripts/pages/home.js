@@ -1,11 +1,8 @@
 import 'regenerator-runtime/runtime';
 import recipesFactory from '../factories/recipesFactory';
-import {
-  createGenericElement,
-  customFetch,
-  recipesConstants,
-} from '../utils/helpers';
+import { createGenericElement, customFetch } from '../utils/helpers';
 import '../../css/home.css';
+import { recipesConstants } from '../constant';
 
 async function getRecipes() {
   const data = await customFetch('./data/recipes.json');
@@ -22,6 +19,7 @@ async function displayRecipes(recipes) {
   });
 }
 const getList = (recipes, type) => {
+  // check maquette, faire array et search
   const list = recipes.reduce((acc, recipe) => {
     if (type === 'appliance') {
       if (!acc.includes(recipe[type])) {
@@ -43,9 +41,9 @@ const getList = (recipes, type) => {
   return list;
 };
 
-const selectIngredientsDisplay = createGenericElement('option', 'Ingrédients');
-const selectAppareilsDisplay = createGenericElement('option', 'Appareils');
-const selectUtensilsDisplay = createGenericElement('option', 'Ustensiles');
+const selectIngredientsDisplay = createGenericElement('option', 'Ingredients');
+const selectAppareilsDisplay = createGenericElement('option', 'Appliance');
+const selectUtensilsDisplay = createGenericElement('option', 'Ustensils');
 
 const searchSection = document.querySelector('.search-section');
 const selectSection = createGenericElement('div', '', 'select-section');
@@ -61,48 +59,62 @@ const selectIngredients = createGenericElement(
   'select',
   '',
   'select-ingredients',
-  [{ name: 'id', value: 'Ingrédients' }]
+  [{ name: 'id', value: 'ingredients' }]
 );
 const selectAppareils = createGenericElement('select', '', 'select-appliance', [
-  { name: 'id', value: 'Appareils' },
+  { name: 'id', value: 'appliance' },
 ]);
 const selectUtensils = createGenericElement('select', '', 'select-ustensils', [
-  { name: 'id', value: 'Ustensiles' },
+  { name: 'id', value: 'ustensils' },
 ]);
 
-selectSection.appendChild(selectIngredients);
-selectSection.appendChild(selectAppareils);
-selectSection.appendChild(selectUtensils);
-searchSection.appendChild(tagSection);
-searchSection.appendChild(selectSection);
+selectSection.append(selectIngredients, selectAppareils, selectUtensils);
+searchSection.append(tagSection, selectSection);
 selectIngredients.appendChild(selectIngredientsDisplay);
 selectAppareils.appendChild(selectAppareilsDisplay);
 selectUtensils.appendChild(selectUtensilsDisplay);
-const selects = [selectIngredients, selectAppareils, selectUtensils];
 
-const setTags = (selectType) => {
+const setTags = (type) => {
+  const selectType = document.querySelector(`#${type}`);
   selectType.addEventListener('change', (e) => {
     const value = e.target.value;
-    if (value === selectType.id) {
+    if (value.toLowerCase() === type) {
       return;
     }
-    const closeTag = createGenericElement('div', 'X', 'close-tag');
+    const tagContainer = createGenericElement(
+      'div',
+      '',
+      `tag-container tag-${type}`,
+      [{ name: 'id', value: `${e.target.value}` }]
+    );
+    const closeTag = createGenericElement(
+      'i',
+      '',
+      'fa-regular fa-circle-xmark',
+      [{ name: 'id', value: `${e.target.value}` }]
+    );
     const tag = createGenericElement(
       'div',
       '',
-      `${selectType.className}-tag tag`,
-      [{ name: 'id', value: `${e.target.value}` }]
+      `${selectType.className}-tag tag`
     );
-    tag.appendChild(closeTag);
-    tagSection.appendChild(tag);
     tag.textContent = value;
+    tagSection.appendChild(tagContainer);
+    tagContainer.append(tag, closeTag);
+    closeTag.addEventListener('click', (e) => {
+      e.preventDefault();
+      tagContainer.remove();
+    });
   });
 };
 
 export default async function init() {
   const { recipes } = await getRecipes();
-  recipesConstants.map((type) => getList(recipes, type));
-  selects.map((selectType) => setTags(selectType));
+  // filter recipes by search bar
+  recipesConstants.map((type) => {
+    getList(recipes, type);
+    setTags(type);
+  });
   displayRecipes(recipes);
 }
 
