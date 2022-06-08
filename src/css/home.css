@@ -111,37 +111,62 @@ i {
   display: flex;
   flex-direction: column;
 }
-.select-section {
+.input-section {
+  position: relative;
+  display: flex;
+  flex-wrap: nowrap;
   margin: 20px 60px 0px 60px;
 }
-select {
-  color: white;
+.input-container {
+  display: flex;
+  align-items: center;
+  color: #fff;
+  min-width: 15vh;
   border-radius: 5px;
   border: none;
-  padding: 0 10px;
   margin-right: 15px;
   margin-bottom: 15px;
-  width: auto;
   height: 55px;
   font-family: inherit;
   font-size: inherit;
   cursor: inherit;
   line-height: inherit;
 }
-select::-ms-expand {
-  display: none;
+input::placeholder {
+  color: white;
 }
-.select-ingredients {
+
+.input-container,
+.input-container input {
+  outline: none;
+  border: none;
+  font-family: inherit;
+  font-size: inherit;
+  border: none;
+  font-family: inherit;
+  font-size: inherit;
+}
+.input-ingredients,
+.input-appliance,
+.input-ustensils {
+  width: 100%;
+  padding: 0 10px;
+}
+.input-ingredients,
+.input-ingredients-container {
   background-color: rgb(50, 130, 247);
 }
-.select-appliance {
+.input-appliance,
+.input-appliance-container {
   background-color: rgb(105, 217, 164);
 }
-.select-ustensils {
+.input-ustensils,
+.input-ustensils-container {
   background-color: rgb(237, 100, 84);
 }
 .tag-section {
   display: flex;
+  flex-wrap: wrap;
   margin: 20px 60px 0px 60px;
 }
 .tag-container {
@@ -149,11 +174,24 @@ select::-ms-expand {
   display: flex;
   align-items: center;
   height: 25px;
-  margin-right: 15px;
+  margin-right: 1px;
+  margin-bottom: 10px;
   padding: 10px;
   border-radius: 5px;
   background-color: rgb(231, 231, 231);
   color: #fff;
+}
+.fa-chevron-down,
+.fa-chevron-up {
+  font-size: 15px;
+}
+.option-container {
+  margin: 0px 60px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  max-height: 120px;
+  text-overflow: ellipsis;
+  overflow: auto;
 }
 .tag-container i {
   font-size: 15px;
@@ -163,12 +201,41 @@ select::-ms-expand {
 .tag {
   margin-right: 5px;
 }
-.tag-ingredients {
+.tag-ingredients,
+.ingredients-list {
   background-color: rgb(50, 130, 247);
 }
-.tag-appliance {
+.tag-appliance,
+.appliance-list {
   background-color: rgb(105, 217, 164);
 }
-.tag-ustensils {
+.tag-ustensils,
+.ustensils-list {
   background-color: rgb(237, 100, 84);
+}
+.ingredients-option {
+  cursor: pointer;
+}
+.fa-chevron-down,
+.fa-chevron-up {
+  cursor: pointer;
+}
+.ingredients-list,
+.appliance-list,
+.ustensils-list {
+  position: absolute;
+  border-radius: 5px;
+  top: 50px;
+  padding: 15px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  color: #fff;
+  max-height: 182px;
+  text-overflow: ellipsis;
+  overflow: auto;
+}
+.ingredients-list-item,
+.appliance-list-item,
+.ustensils-list-item {
+  cursor: pointer;
 }
