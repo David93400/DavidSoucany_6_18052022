@@ -41,13 +41,14 @@ const displayInputOption = (recipes, type) => {
 const toggleOptionList = (recipes, type) => {
   const category = type.type;
   const openBtn = document.querySelector(`.${category}-chevron-down`);
-  //TODO gestion fermeture list-container
   openBtn.addEventListener('click', (e) => {
     if (
       document.querySelector('.list-container') &&
       e.target.classList.contains('fa-chevron-down')
     ) {
       document.querySelector('.list-container').remove();
+      const arrowUp = document.querySelector(`.fa-chevron-up`);
+      handleArrow(arrowUp, 'fa-chevron-down', 'fa-chevron-up');
     }
     if (document.querySelector(`.${category}-list`)) {
       handleArrow(openBtn, 'fa-chevron-down', 'fa-chevron-up');

@@ -112,8 +112,8 @@ const searchOptionsByInput = (recipes, type) => {
   input.addEventListener('click', () => {
     cleanError('.error');
     document.querySelector('form').reset();
-    document.querySelector('.list-container') &&
-      document.querySelector('.list-container').remove();
+    const listContainer = document.querySelector(`.list-container`);
+    listContainer && listContainer.remove();
   });
   // listening to input
   input.addEventListener('input', (e) => {
