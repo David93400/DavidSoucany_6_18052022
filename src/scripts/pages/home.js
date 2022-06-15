@@ -19,8 +19,8 @@ async function getRecipes() {
 
 async function displayRecipes(recipes) {
   const recipesSection = document.querySelector('.recipes-section');
-  recipes.forEach((recipe) => {
-    const recipeModel = recipesFactory(recipe);
+  recipes.forEach(async (recipe) => {
+    const recipeModel = await recipesFactory(recipe);
     const recipeCard = recipeModel.getRecipeCardDOM();
     recipesSection.appendChild(recipeCard);
   });
@@ -41,6 +41,7 @@ const displayInputOption = (recipes, type) => {
 const toggleOptionList = (recipes, type) => {
   const category = type.type;
   const openBtn = document.querySelector(`.${category}-chevron-down`);
+  //TODO gestion fermeture list-container
   openBtn.addEventListener('click', (e) => {
     if (
       document.querySelector('.list-container') &&
@@ -63,10 +64,11 @@ const toggleOptionList = (recipes, type) => {
     );
     listParent.appendChild(listContainer);
     list.forEach((item) => {
+      //TODO add class 'selected' to selected item with ternaire
       const listItem = createGenericElement(
         'div',
         item,
-        `${category}-list-item`,
+        `{${category}-list-item}`,
         [{ name: 'id', value: `${item}` }]
       );
       listContainer.appendChild(listItem);

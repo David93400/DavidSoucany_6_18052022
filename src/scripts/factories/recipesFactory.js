@@ -1,11 +1,18 @@
-import { createGenericElement } from '../utils/helpers';
+import {
+  createGenericElement,
+  normalizeText,
+  searchUnsplash,
+} from '../utils/helpers';
 
-export default function recipesFactory(data) {
-  const { description, ingredients, name, time, img } = data;
+export default async function recipesFactory(data) {
+  const { description, ingredients, name, time } = data;
+  const word = name.split(' ');
+  const firstWord = normalizeText(word[0]);
+  const photo = await searchUnsplash(firstWord);
   function getRecipeCardDOM() {
     const timeIcon = createGenericElement('i', null, 'fa-regular fa-clock');
     const recipeImg = createGenericElement('img', '', 'recipe-img', [
-      { name: 'src', value: `./assets/images/${img}` },
+      { name: 'src', value: photo },
     ]);
     const recipeName = createGenericElement('h2', name, 'recipe-name');
     const recipeDescription = createGenericElement(

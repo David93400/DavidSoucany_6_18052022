@@ -12,6 +12,23 @@ const customFetch = async (url, method = 'GET', headers = {}, body = '') => {
       "Une erreur s'est produite lors du chargement des données, veuillez réessayer plus tard");
   }
 };
+//TODO move to ENV
+const unsplashKey = 'uIvzndJG-v1X4DJJ0pRI-JZZWXkRBX5qYOpsq8B_nco';
+async function searchUnsplash(searchQuery) {
+  const endpoint = `https://api.unsplash.com/search/photos?query=${searchQuery}&client_id=${unsplashKey}`;
+  try {
+    const response = await fetch(endpoint);
+    const responseData = await response.json();
+    let url;
+    responseData.results?.[0]?.urls?.regular
+      ? (url = responseData.results[0].urls.regular)
+      : (url =
+          'https://images.unsplash.com/photo-1622428051717-dcd8412959de?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1160&q=80');
+    return url;
+  } catch (error) {
+    error;
+  }
+}
 
 // create DOM element
 /**
@@ -55,4 +72,10 @@ const cleanError = (classname) => {
     document.querySelector(classname).remove();
 };
 
-export { customFetch, createGenericElement, normalizeText, cleanError };
+export {
+  customFetch,
+  createGenericElement,
+  normalizeText,
+  cleanError,
+  searchUnsplash,
+};
