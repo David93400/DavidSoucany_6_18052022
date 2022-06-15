@@ -42,48 +42,17 @@ const createGenericElement = (
   }
   return element;
 };
-const setArrowDown = (type) => {
-  const arrowDown = createGenericElement(
-    'i',
-    '',
-    `fa-solid fa-chevron-down ${type}-chevron-down`
-  );
-  return arrowDown;
+
+const normalizeText = (text) => {
+  return text
+    .toLowerCase()
+    .normalize('NFD') // décomposer les graphèmes combinés en simple
+    .replace(/[\u0300-\u036f]/g, ''); //enlever les signes diacritiques
 };
 
-const setInputOptionsLabel = (type) => {
-  const wording = {
-    ingredients: 'Ingrédients',
-    appliance: 'Appareils',
-    ustensils: 'Ustensils',
-  };
-  const input = createGenericElement('input', '', `input-${type}`, [
-    { name: 'id', value: type },
-    { name: 'placeholder', value: wording[type] },
-  ]);
-  return input;
-};
-const setInputContainer = (type) => {
-  const inputContainer = createGenericElement(
-    'div',
-    '',
-    `input-${type}-container input-container`
-  );
-  return inputContainer;
-};
-const setInputFilter = (type) => {
-  const inputContainer = setInputContainer(type);
-  const input = setInputOptionsLabel(type);
-  const arrowDown = setArrowDown(type);
-  inputContainer.append(input, arrowDown);
-  return inputContainer;
+const cleanError = (classname) => {
+  document.querySelector(classname) &&
+    document.querySelector(classname).remove();
 };
 
-export {
-  customFetch,
-  createGenericElement,
-  setArrowDown,
-  setInputOptionsLabel,
-  setInputContainer,
-  setInputFilter,
-};
+export { customFetch, createGenericElement, normalizeText, cleanError };
