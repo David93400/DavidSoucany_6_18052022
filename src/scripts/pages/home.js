@@ -4,21 +4,26 @@ import { createGenericElement, customFetch } from '../utils/helpers';
 import '../../css/home.css';
 import { recipesConstants } from '../constant';
 import {
+  cleanRecipesCard,
+  displaySelectSection,
   getTypeList,
   handleArrow,
-  searchOptionsByInput,
+  mainSearch,
   setInputFilter,
   setTags,
 } from '../utils/filter';
 
 async function getRecipes() {
   const data = await customFetch('./data/recipes.json');
-  console.log(data.recipes);
+
   return data;
 }
 
 async function displayRecipes(recipes) {
   const recipesSection = document.querySelector('.recipes-section');
+  if (!recipes) {
+    return;
+  }
   recipes.forEach(async (recipe) => {
     const recipeModel = await recipesFactory(recipe);
     const recipeCard = recipeModel.getRecipeCardDOM();
@@ -26,7 +31,7 @@ async function displayRecipes(recipes) {
   });
 }
 
-const displayInputOption = (recipes, type) => {
+export const displayInputOption = (recipes, type) => {
   const input = document.querySelector(`.input-${type.type}`);
   // placeholder management
   input.addEventListener('focusin', () => {
@@ -42,20 +47,15 @@ const toggleOptionList = (recipes, type) => {
   const category = type.type;
   const openBtn = document.querySelector(`.${category}-chevron-down`);
   openBtn.addEventListener('click', (e) => {
+    const arrowUp = document.querySelector(`.fa-chevron-up`);
+    arrowUp ? handleArrow(arrowUp, 'fa-chevron-down', 'fa-chevron-up') : null;
     if (
       document.querySelector('.list-container') &&
       e.target.classList.contains('fa-chevron-down')
     ) {
       document.querySelector('.list-container').remove();
-      const arrowUp = document.querySelector(`.fa-chevron-up`);
-      handleArrow(arrowUp, 'fa-chevron-down', 'fa-chevron-up');
-    }
-    if (document.querySelector(`.${category}-list`)) {
-      handleArrow(openBtn, 'fa-chevron-down', 'fa-chevron-up');
-      return document.querySelector(`.${category}-list`).remove();
     }
     handleArrow(openBtn, 'fa-chevron-down', 'fa-chevron-up');
-
     const list = getTypeList(recipes, category);
     const listParent = document.querySelector(`.input-${category}-container`);
     const listContainer = createGenericElement(
@@ -69,12 +69,13 @@ const toggleOptionList = (recipes, type) => {
       const listItem = createGenericElement(
         'div',
         item,
-        `{${category}-list-item}`,
+        `${category}-list-item`,
         [{ name: 'id', value: `${item}` }]
       );
       listContainer.appendChild(listItem);
     });
     setTags(category);
+    //todo  filterWithTags function
   });
 };
 
@@ -89,26 +90,29 @@ const searchBar = createGenericElement('input', '', 'search-bar', [
 
 searchSection.appendChild(searchBar);
 
-const inputIngredientsContainer = setInputFilter('ingredients');
-const inputApplianceContainer = setInputFilter('appliance');
-const inputUstensilsContainer = setInputFilter('ustensils');
+recipesConstants.map((type) => {
+  const inputContainer = setInputFilter(type);
+  return inputSection.appendChild(inputContainer);
+});
 
-inputSection.append(
-  inputIngredientsContainer,
-  inputApplianceContainer,
-  inputUstensilsContainer
-);
 searchSection.append(tagSection, inputSection);
 
 export default async function init() {
   const { recipes } = await getRecipes();
-  // filter recipes by search bar
-  recipesConstants.map((type) => {
-    displayInputOption(recipes, type);
-    getTypeList(recipes, type.type);
-    searchOptionsByInput(recipes, type);
+  let filteredRecipes;
+  const searchInput = document.querySelector('.search-bar');
+  searchInput.addEventListener('input', (e) => {
+    //todo function to avoid dry mapping
+    filteredRecipes = mainSearch(recipes, e.target.value);
+    displaySelectSection(recipesConstants, filteredRecipes);
+
+    cleanRecipesCard();
+    displayRecipes(filteredRecipes);
   });
-  displayRecipes(recipes);
+  if (!searchInput.value) {
+    displaySelectSection(recipesConstants, recipes);
+    displayRecipes(recipes);
+  }
 }
 
 init();

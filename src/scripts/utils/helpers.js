@@ -72,10 +72,15 @@ const cleanError = (classname) => {
     document.querySelector(classname).remove();
 };
 
+const uniqueArray = (array) => {
+  return array.filter((item, index) => array.indexOf(item) === index);
+};
+
 export {
   customFetch,
   createGenericElement,
   normalizeText,
   cleanError,
   searchUnsplash,
+  uniqueArray,
 };

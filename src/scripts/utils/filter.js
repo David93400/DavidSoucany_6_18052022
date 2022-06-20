@@ -1,3 +1,4 @@
+import { displayInputOption } from '../pages/home';
 import { cleanError, createGenericElement, normalizeText } from './helpers';
 
 const handleArrow = (element, firstClass, secondClass) => {
@@ -78,14 +79,9 @@ const setArrowDown = (type) => {
 };
 
 const setInputOptionsLabel = (type) => {
-  const wording = {
-    ingredients: 'Ingrédients',
-    appliance: 'Appareils',
-    ustensils: 'Ustensils',
-  };
-  const input = createGenericElement('input', '', `input-${type}`, [
-    { name: 'id', value: type },
-    { name: 'placeholder', value: wording[type] },
+  const input = createGenericElement('input', '', `input-${type.type}`, [
+    { name: 'id', value: type.wording },
+    { name: 'placeholder', value: type.wording },
   ]);
   return input;
 };
@@ -98,9 +94,9 @@ const setInputContainer = (type) => {
   return inputContainer;
 };
 const setInputFilter = (type) => {
-  const inputContainer = setInputContainer(type);
+  const inputContainer = setInputContainer(type.type);
   const input = setInputOptionsLabel(type);
-  const arrowDown = setArrowDown(type);
+  const arrowDown = setArrowDown(type.type);
   inputContainer.append(input, arrowDown);
   return inputContainer;
 };
@@ -132,6 +128,9 @@ const searchOptionsByInput = (recipes, type) => {
       //  cleaning & set up list
       cleanError('.error');
       const list = getTypeList(recipes, type.type);
+      if (document.querySelector(`.${type.type}-list`))
+        document.querySelector(`.${type.type}-list`).remove();
+
       const listContainer = createGenericElement(
         'div',
         '',
@@ -161,10 +160,30 @@ const searchOptionsByInput = (recipes, type) => {
   });
 };
 
+const mainSearch = (recipes, keyword) => {
+  console.log(recipes, keyword);
+};
+
+const cleanRecipesCard = () => {
+  const recipesCard = document.querySelectorAll('.recipe-card');
+  recipesCard ? recipesCard.forEach((recipe) => recipe.remove()) : null;
+};
+
+const displaySelectSection = (recipesConstants, recipes) => {
+  recipesConstants.map((type) => {
+    displayInputOption(recipes, type);
+    getTypeList(recipes, type.type);
+    searchOptionsByInput(recipes, type);
+  });
+};
+
 export {
   handleArrow,
   getTypeList,
   setInputFilter,
   searchOptionsByInput,
   setTags,
+  mainSearch,
+  cleanRecipesCard,
+  displaySelectSection,
 };

@@ -1,6 +1,8 @@
-// todo, intégrer wording dans le fichier
-// export const recipesConstants = ['appliance', 'ustensils', 'ingredients'];
 export const recipesConstants = [
+  {
+    type: 'ingredients',
+    wording: 'Ingrédients',
+  },
   {
     type: 'appliance',
     wording: 'Appareils',
@@ -8,9 +10,5 @@ export const recipesConstants = [
   {
     type: 'ustensils',
     wording: 'Ustensils',
-  },
-  {
-    type: 'ingredients',
-    wording: 'Ingrédients',
   },
 ];
