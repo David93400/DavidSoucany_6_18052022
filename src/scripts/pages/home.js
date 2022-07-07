@@ -52,7 +52,6 @@ const toggleOptionList = (recipes, type) => {
     setTags(category);
   });
   closeBtn.addEventListener('click', () => {
-    setTags(category);
     const arrowUp = document.querySelector(`.fa-chevron-up`);
     arrowUp ? handleArrow(arrowUp, 'fa-chevron-up', 'fa-chevron-down') : null;
     const listContainer = document.querySelector(`.list-container`);

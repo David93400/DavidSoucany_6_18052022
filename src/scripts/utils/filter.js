@@ -10,43 +10,54 @@ const handleArrow = (element, firstClass, secondClass) => {
     element.classList.add(firstClass);
   }
 };
+const createTag = (tagArray, option, type) => {
+  const tagSection = document.querySelector('.tag-section');
+  if (tagArray.includes(option.innerText)) {
+    return;
+  }
+  option.classList.add('selected');
+  tagArray.push(option.innerText);
+  const value = option.innerText;
+  const tagContainer = createGenericElement(
+    'div',
+    '',
+    `tag-container tag-${type}`,
+    [{ name: 'id', value: value }]
+  );
+  const closeTag = createGenericElement('i', '', 'fa-regular fa-circle-xmark');
+  const tag = createGenericElement('div', value, `${option.className}-tag tag`);
+  tagSection.appendChild(tagContainer);
+  tagContainer.append(tag, closeTag);
+  return tagArray;
+};
+
+const deleteTags = (tagArray, option, e) => {
+  const value = option.innerText;
+  const tagContainer = e.target.parentElement;
+  option.classList.remove('selected');
+  tagArray.splice(tagArray.indexOf(value), 1);
+  e.preventDefault();
+  tagContainer.remove();
+  return tagArray;
+};
 
 const setTags = (type) => {
   const tagArray = [];
   const options = document.querySelectorAll(`.${type}-list-item`);
-  const tagSection = document.querySelector('.tag-section');
+  let tags = [];
   options.forEach((option) => {
     option.addEventListener('click', () => {
-      if (tagArray.includes(option.innerText)) {
-        return;
-      }
-      option.classList.add('selected');
-      tagArray.push(option.innerText);
-      const value = option.innerText;
-      const tagContainer = createGenericElement(
-        'div',
-        '',
-        `tag-container tag-${type}`,
-        [{ name: 'id', value: value }]
-      );
-      const closeTag = createGenericElement(
-        'i',
-        '',
-        'fa-regular fa-circle-xmark',
-        [{ name: 'id', value: value }]
-      );
-      const tag = createGenericElement(
-        'div',
-        value,
-        `${option.className}-tag tag`
-      );
-      tagSection.appendChild(tagContainer);
-      tagContainer.append(tag, closeTag);
-      closeTag.addEventListener('click', (e) => {
-        tagArray.splice(tagArray.indexOf(value), 1);
-        e.preventDefault();
-        tagContainer.remove();
+      createTag(tagArray, option, type);
+      tags = document.querySelectorAll(`.fa-circle-xmark`);
+      tags.forEach((tag) => {
+        tag.addEventListener('click', (e) => {
+          deleteTags(tagArray, option, e);
+          console.log(tagArray);
+          return tagArray;
+        });
       });
+      console.log(tagArray);
+      return tagArray;
     });
   });
 };
