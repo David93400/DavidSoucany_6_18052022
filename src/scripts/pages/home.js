@@ -68,6 +68,7 @@ export const toggleOptionList = (recipes, type, tagsArray) => {
         closeOptionList(category);
       }
     });
+  setTags(category);
 };
 
 const searchSection = document.querySelector('.search-section');
