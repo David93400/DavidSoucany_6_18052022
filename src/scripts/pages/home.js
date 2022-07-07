@@ -7,12 +7,12 @@ import {
   closeOptionList,
   displaySelectSection,
   handleArrow,
-  mainSearch,
   setInputFilter,
   setOptionList,
   setTags,
 } from '../utils/filter';
 import { tagsSearch } from '../tagsSearch';
+import { mainSearch } from '../mainSearch';
 
 let tagsArray = [];
 
