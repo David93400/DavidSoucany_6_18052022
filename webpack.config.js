@@ -4,6 +4,8 @@ const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ESLintPlugin = require('eslint-webpack-plugin');
+const dotenv = require('dotenv');
+dotenv.config();
 
 module.exports = {
   mode: 'development',
@@ -33,7 +35,12 @@ module.exports = {
       },
     ],
   },
-  plugins: [new ESLintPlugin()],
+  plugins: [
+    // new ESLintPlugin(),
+    new webpack.DefinePlugin({
+      'process.env': JSON.stringify(process.env),
+    }),
+  ],
   devServer: {
     static: path.join(__dirname, './public'),
     hot: true,

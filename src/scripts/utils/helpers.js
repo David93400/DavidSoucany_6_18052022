@@ -12,8 +12,8 @@ const customFetch = async (url, method = 'GET', headers = {}, body = '') => {
       "Une erreur s'est produite lors du chargement des données, veuillez réessayer plus tard");
   }
 };
-//TODO move to ENV
-const unsplashKey = 'uIvzndJG-v1X4DJJ0pRI-JZZWXkRBX5qYOpsq8B_nco';
+// eslint-disable-next-line no-undef
+const unsplashKey = process.env.UNSPLASH_KEY;
 async function searchUnsplash(searchQuery) {
   const endpoint = `https://api.unsplash.com/search/photos?query=${searchQuery}&client_id=${unsplashKey}`;
   try {
