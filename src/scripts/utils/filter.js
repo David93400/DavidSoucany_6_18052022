@@ -170,8 +170,6 @@ const searchOptionsByInput = (recipes, type) => {
 const setOptionList = (recipes, category) => {
   const container = document.querySelector(`.list-container`);
   container && container.remove();
-  const arrowDown = document.querySelector(`.${category}-chevron-down`);
-  arrowDown ? handleArrow(arrowDown, 'fa-chevron-down', 'fa-chevron-up') : null;
   const list = getTypeList(recipes, category);
   const listParent = document.querySelector(`.input-${category}-container`);
   const listContainer = createGenericElement(
@@ -207,6 +205,22 @@ const displaySelectSection = (recipesConstants, recipes) => {
     searchOptionsByInput(recipes, type);
   });
 };
+const closeOptionList = (category) => {
+  const closeBtn = document.querySelector(`.${category}-chevron-up`);
+  closeBtn &&
+    closeBtn.addEventListener('click', () => {
+      const listContainer = document.querySelector(`.${category}-list`);
+      const arrowUp = document.querySelector(`.fa-chevron-up`);
+      arrowUp &&
+        (handleArrow(arrowUp, `fa-chevron-up`, `fa-chevron-down`),
+        handleArrow(
+          arrowUp,
+          `${category}-chevron-up`,
+          `${category}-chevron-down`
+        ));
+      listContainer && listContainer.remove();
+    });
+};
 
 export {
   handleArrow,
@@ -218,4 +232,5 @@ export {
   setOptionList,
   cleanRecipesCard,
   displaySelectSection,
+  closeOptionList,
 };

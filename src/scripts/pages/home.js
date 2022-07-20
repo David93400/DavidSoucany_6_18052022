@@ -5,6 +5,7 @@ import '../../css/home.css';
 import { recipesConstants } from '../constant';
 import {
   cleanRecipesCard,
+  closeOptionList,
   displaySelectSection,
   handleArrow,
   mainSearch,
@@ -45,18 +46,34 @@ export const displayInputOption = (recipes, type) => {
 
 const toggleOptionList = (recipes, type) => {
   const category = type.type;
+  const openBtn = document.querySelector(`.${category}-chevron-down`);
   const input = document.querySelector(`.input-${category}`);
-  const closeBtn = document.querySelector(`.${category}-chevron-down`);
   input.addEventListener('focus', () => {
+    const arrowUp = document.querySelector(`.fa-chevron-up`);
+    openBtn &&
+      (handleArrow(openBtn, `fa-chevron-down`, `fa-chevron-up`),
+      handleArrow(
+        openBtn,
+        `${category}-chevron-down`,
+        `${category}-chevron-up`
+      ));
+    arrowUp && handleArrow(arrowUp, `fa-chevron-up`, `fa-chevron-down`);
     setOptionList(recipes, category);
     setTags(category);
+    closeOptionList(category);
   });
-  closeBtn.addEventListener('click', () => {
-    const arrowUp = document.querySelector(`.fa-chevron-up`);
-    arrowUp ? handleArrow(arrowUp, 'fa-chevron-up', 'fa-chevron-down') : null;
-    const listContainer = document.querySelector(`.list-container`);
-    listContainer && listContainer.remove();
-  });
+
+  // openBtn.addEventListener('click', () => {
+  //   console.log('open', openBtn);
+  //   handleArrow(openBtn, `fa-chevron-down`, `fa-chevron-up`),
+  //     handleArrow(
+  //       openBtn,
+  //       `${category}-chevron-down`,
+  //       `${category}-chevron-up`
+  //     );
+  //   setOptionList(recipes, category);
+  //   setTags(category);
+  // });
 };
 
 const searchSection = document.querySelector('.search-section');
