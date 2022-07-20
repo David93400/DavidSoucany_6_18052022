@@ -31,35 +31,32 @@ const createTag = (tagArray, option, type) => {
   return tagArray;
 };
 
-const deleteTags = (tagArray, option, e) => {
-  const value = option.innerText;
-  const tagContainer = e.target.parentElement;
-  option.classList.remove('selected');
-  tagArray.splice(tagArray.indexOf(value), 1);
-  e.preventDefault();
-  tagContainer.remove();
-  return tagArray;
+const deleteTags = (tagArray, option) => {
+  const tag = document.getElementById(option.innerText);
+  tag.addEventListener('click', () => {
+    for (let i = 0; i < tagArray.length; i++) {
+      if (tagArray[i] === option.innerText) {
+        tagArray.splice(i, 1);
+        option.classList.remove('selected');
+        tag.remove();
+      }
+    }
+    console.log('after delete', tagArray, option.innerText);
+  });
 };
 
 const setTags = (type) => {
   const tagArray = [];
   const options = document.querySelectorAll(`.${type}-list-item`);
-  let tags = [];
   options.forEach((option) => {
     option.addEventListener('click', () => {
       createTag(tagArray, option, type);
-      tags = document.querySelectorAll(`.fa-circle-xmark`);
-      tags.forEach((tag) => {
-        tag.addEventListener('click', (e) => {
-          deleteTags(tagArray, option, e);
-          console.log(tagArray);
-          return tagArray;
-        });
-      });
-      console.log(tagArray);
+      console.log('after add', tagArray);
+      deleteTags(tagArray, option);
       return tagArray;
     });
   });
+  return tagArray;
 };
 
 const getTypeList = (recipes, type) => {

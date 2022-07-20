@@ -14,6 +14,8 @@ import {
   setTags,
 } from '../utils/filter';
 
+let tagsArray = [];
+
 async function getRecipes() {
   const data = await customFetch('./data/recipes.json');
 
@@ -59,7 +61,7 @@ const toggleOptionList = (recipes, type) => {
       ));
     arrowUp && handleArrow(arrowUp, `fa-chevron-up`, `fa-chevron-down`);
     setOptionList(recipes, category);
-    setTags(category);
+    tagsArray.push(setTags(category));
     closeOptionList(category);
   });
 
@@ -98,6 +100,10 @@ export default async function init() {
   const { recipes } = await getRecipes();
   let filteredRecipes;
   const searchInput = document.querySelector('.search-bar');
+  // for testing
+  document.querySelector('.logo').addEventListener('click', () => {
+    console.log(tagsArray.flat());
+  });
   searchInput.addEventListener('input', (e) => {
     //todo function to avoid dry mapping
     filteredRecipes = mainSearch(recipes, e.target.value);
