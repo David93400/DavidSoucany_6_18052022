@@ -67,21 +67,31 @@ i {
 .recipe-description {
   font-size: 0.8rem;
   margin: 0px 10px 20px 10px;
-  max-height: 120px;
+  max-height: 105px;
   text-overflow: ellipsis;
   overflow: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.recipe-description::-webkit-scrollbar {
+  display: none;
 }
 .recipe-ingredients {
   margin: 0px 20px;
   font-size: 0.8rem;
-  max-height: 120px;
+  max-height: 105px;
   text-overflow: ellipsis;
   overflow: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 .recipe-ingredient {
   font-size: 0.8rem;
   text-overflow: ellipsis;
   overflow: hidden;
+}
+.recipe-ingredients::-webkit-scrollbar {
+  display: none;
 }
 .recipes-section {
   margin: 50px;

@@ -190,11 +190,6 @@ const mainSearch = (recipes, keyword) => {
   console.log(recipes, keyword);
 };
 
-const cleanRecipesCard = () => {
-  const recipesCard = document.querySelectorAll('.recipe-card');
-  recipesCard ? recipesCard.forEach((recipe) => recipe.remove()) : null;
-};
-
 const displaySelectSection = (recipesConstants, recipes) => {
   recipesConstants.map((type) => {
     displayInputOption(recipes, type);
@@ -206,15 +201,16 @@ const closeOptionList = (category) => {
   const closeBtn = document.querySelector(`.${category}-chevron-up`);
   closeBtn &&
     closeBtn.addEventListener('click', () => {
+      console.log('close');
       const listContainer = document.querySelector(`.${category}-list`);
-      const arrowUp = document.querySelector(`.fa-chevron-up`);
-      arrowUp &&
-        (handleArrow(arrowUp, `fa-chevron-up`, `fa-chevron-down`),
+      // const arrowUp = document.querySelector(`.fa-chevron-up`);
+      closeBtn && handleArrow(closeBtn, `fa-chevron-up`, `fa-chevron-down`);
+      closeBtn &&
         handleArrow(
-          arrowUp,
+          closeBtn,
           `${category}-chevron-up`,
           `${category}-chevron-down`
-        ));
+        );
       listContainer && listContainer.remove();
     });
 };
@@ -227,7 +223,6 @@ export {
   setTags,
   mainSearch,
   setOptionList,
-  cleanRecipesCard,
   displaySelectSection,
   closeOptionList,
 };

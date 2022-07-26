@@ -4,7 +4,6 @@ import { createGenericElement, customFetch } from '../utils/helpers';
 import '../../css/home.css';
 import { recipesConstants } from '../constant';
 import {
-  cleanRecipesCard,
   closeOptionList,
   displaySelectSection,
   handleArrow,
@@ -51,7 +50,6 @@ const toggleOptionList = (recipes, type) => {
   const openBtn = document.querySelector(`.${category}-chevron-down`);
   const input = document.querySelector(`.input-${category}`);
   input.addEventListener('focus', () => {
-    const arrowUp = document.querySelector(`.fa-chevron-up`);
     openBtn &&
       (handleArrow(openBtn, `fa-chevron-down`, `fa-chevron-up`),
       handleArrow(
@@ -59,23 +57,26 @@ const toggleOptionList = (recipes, type) => {
         `${category}-chevron-down`,
         `${category}-chevron-up`
       ));
-    arrowUp && handleArrow(arrowUp, `fa-chevron-up`, `fa-chevron-down`);
     setOptionList(recipes, category);
     tagsArray.push(setTags(category));
     closeOptionList(category);
   });
-
-  // openBtn.addEventListener('click', () => {
-  //   console.log('open', openBtn);
-  //   handleArrow(openBtn, `fa-chevron-down`, `fa-chevron-up`),
-  //     handleArrow(
-  //       openBtn,
-  //       `${category}-chevron-down`,
-  //       `${category}-chevron-up`
-  //     );
-  //   setOptionList(recipes, category);
-  //   setTags(category);
-  // });
+  openBtn.addEventListener('click', () => {
+    // écouter sur la div parente (.input-ingredient-container), si <i> arrow down => open else close list
+    const listContainer = document.querySelector(`.${category}-list`);
+    if (!listContainer) {
+      console.log('open');
+      handleArrow(
+        openBtn,
+        `${category}-chevron-down`,
+        `${category}-chevron-up`
+      );
+      handleArrow(openBtn, `fa-chevron-down`, `fa-chevron-up`);
+      setOptionList(recipes, category);
+      setTags(category);
+    }
+    closeOptionList(category);
+  });
 };
 
 const searchSection = document.querySelector('.search-section');
@@ -107,9 +108,8 @@ export default async function init() {
   searchInput.addEventListener('input', (e) => {
     //todo function to avoid dry mapping
     filteredRecipes = mainSearch(recipes, e.target.value);
+    // refiltrer avec les tags ici
     displaySelectSection(recipesConstants, filteredRecipes);
-
-    cleanRecipesCard();
     displayRecipes(filteredRecipes);
   });
   if (!searchInput.value) {
