@@ -12,6 +12,7 @@ import {
   setOptionList,
   setTags,
 } from '../utils/filter';
+import { tagsSearch } from '../tagsSearch';
 
 let tagsArray = [];
 
@@ -23,6 +24,7 @@ async function getRecipes() {
 
 async function displayRecipes(recipes) {
   const recipesSection = document.querySelector('.recipes-section');
+  recipesSection ? (recipesSection.innerHTML = '') : null;
   if (!recipes) {
     return;
   }
@@ -99,18 +101,26 @@ searchSection.append(tagSection, inputSection);
 
 export default async function init() {
   const { recipes } = await getRecipes();
-  let filteredRecipes;
+  let filteredRecipesWithInput;
+  let filteredRecipesWithTags;
   const searchInput = document.querySelector('.search-bar');
   // for testing
   document.querySelector('.logo').addEventListener('click', () => {
-    console.log(tagsArray.flat());
+    if (tagsArray.length > 0) {
+      console.log('test tagarrays');
+      filteredRecipesWithTags = tagsSearch(recipes, tagsArray.flat());
+      console.log(filteredRecipesWithTags);
+      // displaySelectSection(recipesConstants, filteredRecipesWithTags);
+      displayRecipes(filteredRecipesWithTags);
+    }
+    console.log('tagArrays', tagsArray.flat());
   });
   searchInput.addEventListener('input', (e) => {
-    //todo function to avoid dry mapping
-    filteredRecipes = mainSearch(recipes, e.target.value);
+    filteredRecipesWithInput = mainSearch(recipes, e.target.value);
     // refiltrer avec les tags ici
-    displaySelectSection(recipesConstants, filteredRecipes);
-    displayRecipes(filteredRecipes);
+    filteredRecipesWithTags = tagsSearch(filteredRecipesWithInput, tagsArray);
+    displaySelectSection(recipesConstants, filteredRecipesWithTags);
+    displayRecipes(filteredRecipesWithTags);
   });
   if (!searchInput.value) {
     displaySelectSection(recipesConstants, recipes);

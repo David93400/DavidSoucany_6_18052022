@@ -41,7 +41,6 @@ const deleteTags = (tagArray, option) => {
         tag.remove();
       }
     }
-    console.log('after delete', tagArray, option.innerText);
   });
 };
 
@@ -51,7 +50,6 @@ const setTags = (type) => {
   options.forEach((option) => {
     option.addEventListener('click', () => {
       createTag(tagArray, option, type);
-      console.log('after add', tagArray);
       deleteTags(tagArray, option);
       return tagArray;
     });
