@@ -49,35 +49,20 @@ export const displayInputOption = (recipes, type) => {
 
 const toggleOptionList = (recipes, type) => {
   const category = type.type;
-  const openBtn = document.querySelector(`.${category}-chevron-down`);
-  const input = document.querySelector(`.input-${category}`);
-  input.addEventListener('focus', () => {
-    openBtn &&
-      (handleArrow(openBtn, `fa-chevron-down`, `fa-chevron-up`),
-      handleArrow(
-        openBtn,
-        `${category}-chevron-down`,
-        `${category}-chevron-up`
-      ));
-    setOptionList(recipes, category);
-    tagsArray.push(setTags(category));
-    closeOptionList(category);
-  });
-  openBtn.addEventListener('click', () => {
-    // écouter sur la div parente (.input-ingredient-container), si <i> arrow down => open else close list
-    const listContainer = document.querySelector(`.${category}-list`);
-    if (!listContainer) {
-      console.log('open');
-      handleArrow(
-        openBtn,
-        `${category}-chevron-down`,
-        `${category}-chevron-up`
-      );
-      handleArrow(openBtn, `fa-chevron-down`, `fa-chevron-up`);
+  const input = document.querySelector(`.input-${category}-container`);
+
+  input.addEventListener('click', () => {
+    const arrowBtn = input.children.item(1);
+    const arrowUp = document.querySelector('.fa-chevron-up');
+    if (arrowBtn.classList.contains('fa-chevron-down')) {
+      handleArrow(arrowBtn, `fa-chevron-down`, `fa-chevron-up`);
+      arrowUp ? handleArrow(arrowUp, `fa-chevron-up`, `fa-chevron-down`) : null;
       setOptionList(recipes, category);
-      setTags(category);
+      tagsArray.push(setTags(category));
+    } else {
+      handleArrow(arrowBtn, `fa-chevron-up`, `fa-chevron-down`);
+      closeOptionList(category);
     }
-    closeOptionList(category);
   });
 };
 
@@ -102,19 +87,22 @@ searchSection.append(tagSection, inputSection);
 export default async function init() {
   const { recipes } = await getRecipes();
   let filteredRecipesWithInput;
-  let filteredRecipesWithTags;
+  let filteredRecipesWithTags = [];
   const searchInput = document.querySelector('.search-bar');
+
   // for testing
   document.querySelector('.logo').addEventListener('click', () => {
     if (tagsArray.length > 0) {
-      console.log('test tagarrays');
+      // vérifier si tagsArray est vide, si oui, filtrer avec recipes et si non, filtrer avec filteredRecipesWithTags
       filteredRecipesWithTags = tagsSearch(recipes, tagsArray.flat());
       console.log(filteredRecipesWithTags);
-      // displaySelectSection(recipesConstants, filteredRecipesWithTags);
+      // intégrer displaySelectSection(filteredRecipesWithTags)
       displayRecipes(filteredRecipesWithTags);
     }
     console.log('tagArrays', tagsArray.flat());
   });
+  // for testing
+
   searchInput.addEventListener('input', (e) => {
     filteredRecipesWithInput = mainSearch(recipes, e.target.value);
     // refiltrer avec les tags ici

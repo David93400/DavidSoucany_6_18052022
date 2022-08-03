@@ -11,6 +11,7 @@ const handleArrow = (element, firstClass, secondClass) => {
   }
 };
 const createTag = (tagArray, option, type) => {
+  const listContainer = document.querySelector(`.list-container`);
   const tagSection = document.querySelector('.tag-section');
   if (tagArray.includes(option.innerText)) {
     return;
@@ -28,6 +29,7 @@ const createTag = (tagArray, option, type) => {
   const tag = createGenericElement('div', value, `${option.className}-tag tag`);
   tagSection.appendChild(tagContainer);
   tagContainer.append(tag, closeTag);
+  listContainer.remove();
   return tagArray;
 };
 
@@ -50,7 +52,9 @@ const setTags = (type) => {
   options.forEach((option) => {
     option.addEventListener('click', () => {
       createTag(tagArray, option, type);
+      // gérer
       deleteTags(tagArray, option);
+
       return tagArray;
     });
   });
@@ -195,22 +199,9 @@ const displaySelectSection = (recipesConstants, recipes) => {
     searchOptionsByInput(recipes, type);
   });
 };
-const closeOptionList = (category) => {
-  const closeBtn = document.querySelector(`.${category}-chevron-up`);
-  closeBtn &&
-    closeBtn.addEventListener('click', () => {
-      console.log('close');
-      const listContainer = document.querySelector(`.${category}-list`);
-      // const arrowUp = document.querySelector(`.fa-chevron-up`);
-      closeBtn && handleArrow(closeBtn, `fa-chevron-up`, `fa-chevron-down`);
-      closeBtn &&
-        handleArrow(
-          closeBtn,
-          `${category}-chevron-up`,
-          `${category}-chevron-down`
-        );
-      listContainer && listContainer.remove();
-    });
+const closeOptionList = () => {
+  const listContainer = document.querySelector(`.list-container`);
+  listContainer && listContainer.remove();
 };
 
 export {
