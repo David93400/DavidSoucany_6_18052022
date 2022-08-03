@@ -19,6 +19,20 @@ export const tagsSearch = (recipes, tagsArray) => {
       }
     });
   });
-  console.log(filteredRecipes);
+  if (tagsArray.length > 1) {
+    console.log(filteredRecipes);
+    tagsArray.forEach((tag) => {
+      filteredRecipes.forEach((recipe) => {
+        if (
+          !normalizeText(recipe.name).includes(normalizeText(tag)) &&
+          !normalizeText(recipe.description).includes(normalizeText(tag)) &&
+          !recipe.ingredients.toString().includes(normalizeText(tag)) &&
+          !normalizeText(recipe.appliance).includes(normalizeText(tag))
+        ) {
+          filteredRecipes.splice(filteredRecipes.indexOf(recipe), 1);
+        }
+      });
+    });
+  }
   return filteredRecipes;
 };

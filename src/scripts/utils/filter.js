@@ -1,4 +1,5 @@
-import { displayInputOption } from '../pages/home';
+import { displayInputOption, displayRecipes } from '../pages/home';
+import { tagsSearch } from '../tagsSearch';
 import { cleanError, createGenericElement, normalizeText } from './helpers';
 
 const handleArrow = (element, firstClass, secondClass) => {
@@ -11,7 +12,6 @@ const handleArrow = (element, firstClass, secondClass) => {
   }
 };
 const createTag = (tagArray, option, type) => {
-  const listContainer = document.querySelector(`.list-container`);
   const tagSection = document.querySelector('.tag-section');
   if (tagArray.includes(option.innerText)) {
     return;
@@ -29,11 +29,11 @@ const createTag = (tagArray, option, type) => {
   const tag = createGenericElement('div', value, `${option.className}-tag tag`);
   tagSection.appendChild(tagContainer);
   tagContainer.append(tag, closeTag);
-  listContainer.remove();
+  closeOptionList();
   return tagArray;
 };
 
-const deleteTags = (tagArray, option) => {
+const deleteTags = (recipes, tagArray, option) => {
   const tag = document.getElementById(option.innerText);
   tag.addEventListener('click', () => {
     for (let i = 0; i < tagArray.length; i++) {
@@ -41,20 +41,26 @@ const deleteTags = (tagArray, option) => {
         tagArray.splice(i, 1);
         option.classList.remove('selected');
         tag.remove();
+        const filteredRecipesWithTags = tagsSearch(recipes, tagArray.flat());
+        // refresh display options
+        displayRecipes(filteredRecipesWithTags);
+        console.log(tagArray);
+        return tagArray;
       }
     }
+    return tagArray;
   });
 };
 
-const setTags = (type) => {
+const setTags = (recipes, type, tagsArray) => {
   const tagArray = [];
   const options = document.querySelectorAll(`.${type}-list-item`);
   options.forEach((option) => {
     option.addEventListener('click', () => {
       createTag(tagArray, option, type);
-      // gérer
-      deleteTags(tagArray, option);
-
+      deleteTags(recipes, tagsArray.flat(), option);
+      const filteredRecipesWithTags = tagsSearch(recipes, tagsArray.flat());
+      displayRecipes(filteredRecipesWithTags);
       return tagArray;
     });
   });
@@ -110,7 +116,7 @@ const setInputFilter = (type) => {
   inputContainer.append(input, arrowDown);
   return inputContainer;
 };
-const searchOptionsByInput = (recipes, type) => {
+const searchOptionsByInput = (recipes, type, tagsArray) => {
   const list = getTypeList(recipes, type.type);
   const category = type.type;
   const input = document.querySelector(`.input-${type.type}`);
@@ -161,7 +167,7 @@ const searchOptionsByInput = (recipes, type) => {
         }
         listParent.appendChild(listContainer);
       });
-      setTags(category);
+      tagsArray.push(setTags(recipes, category, tagsArray));
     }
   });
 };
@@ -192,11 +198,11 @@ const mainSearch = (recipes, keyword) => {
   console.log(recipes, keyword);
 };
 
-const displaySelectSection = (recipesConstants, recipes) => {
+const displaySelectSection = (recipesConstants, recipes, tagsArray) => {
   recipesConstants.map((type) => {
-    displayInputOption(recipes, type);
-    getTypeList(recipes, type.type);
-    searchOptionsByInput(recipes, type);
+    displayInputOption(recipes, type, tagsArray);
+    getTypeList(recipes, type.type, tagsArray);
+    searchOptionsByInput(recipes, type, tagsArray);
   });
 };
 const closeOptionList = () => {

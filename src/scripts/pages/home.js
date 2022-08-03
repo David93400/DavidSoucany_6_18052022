@@ -22,7 +22,7 @@ async function getRecipes() {
   return data;
 }
 
-async function displayRecipes(recipes) {
+export async function displayRecipes(recipes) {
   const recipesSection = document.querySelector('.recipes-section');
   recipesSection ? (recipesSection.innerHTML = '') : null;
   if (!recipes) {
@@ -35,30 +35,31 @@ async function displayRecipes(recipes) {
   });
 }
 
-export const displayInputOption = (recipes, type) => {
+export const displayInputOption = (recipes, type, tagsArray) => {
   const input = document.querySelector(`.input-${type.type}`);
-  // placeholder management
   input.addEventListener('focusin', () => {
     input.setAttribute('placeholder', `Rechercher ${type.wording}`);
   });
   input.addEventListener('focusout', () => {
     input.setAttribute('placeholder', `${type.wording}`);
   });
-  toggleOptionList(recipes, type);
+  toggleOptionList(recipes, type, tagsArray);
 };
 
-const toggleOptionList = (recipes, type) => {
+export const toggleOptionList = (recipes, type, tagsArray) => {
   const category = type.type;
   const input = document.querySelector(`.input-${category}-container`);
-
   input.addEventListener('click', () => {
+    if (tagsArray?.length > 0) {
+      recipes = tagsSearch(recipes, tagsArray.flat());
+    }
     const arrowBtn = input.children.item(1);
     const arrowUp = document.querySelector('.fa-chevron-up');
     if (arrowBtn.classList.contains('fa-chevron-down')) {
       handleArrow(arrowBtn, `fa-chevron-down`, `fa-chevron-up`);
       arrowUp ? handleArrow(arrowUp, `fa-chevron-up`, `fa-chevron-down`) : null;
-      setOptionList(recipes, category);
-      tagsArray.push(setTags(category));
+      setOptionList(recipes, category, tagsArray);
+      tagsArray.push(setTags(recipes, category, tagsArray));
     } else {
       handleArrow(arrowBtn, `fa-chevron-up`, `fa-chevron-down`);
       closeOptionList(category);
@@ -89,29 +90,21 @@ export default async function init() {
   let filteredRecipesWithInput;
   let filteredRecipesWithTags = [];
   const searchInput = document.querySelector('.search-bar');
-
-  // for testing
-  document.querySelector('.logo').addEventListener('click', () => {
-    if (tagsArray.length > 0) {
-      // vérifier si tagsArray est vide, si oui, filtrer avec recipes et si non, filtrer avec filteredRecipesWithTags
-      filteredRecipesWithTags = tagsSearch(recipes, tagsArray.flat());
-      console.log(filteredRecipesWithTags);
-      // intégrer displaySelectSection(filteredRecipesWithTags)
-      displayRecipes(filteredRecipesWithTags);
-    }
-    console.log('tagArrays', tagsArray.flat());
+  // testing
+  const logo = document.querySelector('.logo');
+  logo.addEventListener('click', () => {
+    console.log(tagsArray.flat());
   });
-  // for testing
 
   searchInput.addEventListener('input', (e) => {
     filteredRecipesWithInput = mainSearch(recipes, e.target.value);
-    // refiltrer avec les tags ici
+    // vérifier si tagsArray est vide, si oui, filtrer avec recipes et si non, filtrer avec filteredRecipesWithTags
     filteredRecipesWithTags = tagsSearch(filteredRecipesWithInput, tagsArray);
     displaySelectSection(recipesConstants, filteredRecipesWithTags);
     displayRecipes(filteredRecipesWithTags);
   });
   if (!searchInput.value) {
-    displaySelectSection(recipesConstants, recipes);
+    displaySelectSection(recipesConstants, recipes, tagsArray);
     displayRecipes(recipes);
   }
 }
