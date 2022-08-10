@@ -1,7 +1,7 @@
 import { normalizeText, uniqueArray } from './utils/helpers';
 
 export const tagsSearch = (recipes, tagsArray) => {
-  let newRescipesList = [];
+  let newRecipesList = [];
   let filteredRecipes = [];
   if (tagsArray.length === 0) {
     return recipes;
@@ -14,13 +14,12 @@ export const tagsSearch = (recipes, tagsArray) => {
         recipe.ingredients.toString().includes(normalizeText(tag)) ||
         normalizeText(recipe.appliance).includes(normalizeText(tag))
       ) {
-        newRescipesList.push(recipe);
-        filteredRecipes = uniqueArray(newRescipesList);
+        newRecipesList.push(recipe);
+        filteredRecipes = uniqueArray(newRecipesList);
       }
     });
   });
   if (tagsArray.length > 1) {
-    console.log(filteredRecipes);
     tagsArray.forEach((tag) => {
       filteredRecipes.forEach((recipe) => {
         if (

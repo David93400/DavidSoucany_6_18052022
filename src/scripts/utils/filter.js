@@ -25,7 +25,9 @@ const createTag = (tagArray, option, type) => {
     `tag-container tag-${type}`,
     [{ name: 'id', value: value }]
   );
-  const closeTag = createGenericElement('i', '', 'fa-regular fa-circle-xmark');
+  const closeTag = createGenericElement('i', '', 'fa-regular fa-circle-xmark', [
+    { name: 'id', value: value },
+  ]);
   const tag = createGenericElement('div', value, `${option.className}-tag tag`);
   tagSection.appendChild(tagContainer);
   tagContainer.append(tag, closeTag);
@@ -33,23 +35,14 @@ const createTag = (tagArray, option, type) => {
   return tagArray;
 };
 
-const deleteTags = (recipes, tagArray, option) => {
-  const tag = document.getElementById(option.innerText);
-  tag.addEventListener('click', () => {
-    for (let i = 0; i < tagArray.length; i++) {
-      if (tagArray[i] === option.innerText) {
-        tagArray.splice(i, 1);
-        option.classList.remove('selected');
-        tag.remove();
-        const filteredRecipesWithTags = tagsSearch(recipes, tagArray.flat());
-        // refresh display options
-        displayRecipes(filteredRecipesWithTags);
-        console.log(tagArray);
-        return tagArray;
-      }
-    }
-    return tagArray;
-  });
+const deleteTags = (recipes, tagsArray, type, e) => {
+  const tagName = e.target.id;
+  tagsArray.indexOf(tagName) > -1 &&
+    tagsArray.splice(tagsArray.indexOf(tagName), 1);
+  e.target.parentElement.remove();
+  const filteredRecipesWithTags = tagsSearch(recipes, tagsArray.flat());
+  displayRecipes(filteredRecipesWithTags);
+  return tagsArray;
 };
 
 const setTags = (recipes, type, tagsArray) => {
@@ -58,10 +51,18 @@ const setTags = (recipes, type, tagsArray) => {
   options.forEach((option) => {
     option.addEventListener('click', () => {
       createTag(tagArray, option, type);
-      deleteTags(recipes, tagsArray.flat(), option);
       const filteredRecipesWithTags = tagsSearch(recipes, tagsArray.flat());
       displayRecipes(filteredRecipesWithTags);
       return tagArray;
+    });
+    // listener for close tag
+  });
+  document.body.addEventListener('click', (e) => {
+    const closeTag = document.querySelectorAll('.fa-circle-xmark');
+    closeTag.forEach((tag) => {
+      if (e.target === tag) {
+        tagsArray = deleteTags(recipes, tagsArray.flat(), type, e);
+      }
     });
   });
   return tagArray;

@@ -49,22 +49,25 @@ export const displayInputOption = (recipes, type, tagsArray) => {
 export const toggleOptionList = (recipes, type, tagsArray) => {
   const category = type.type;
   const input = document.querySelector(`.input-${category}-container`);
-  input.addEventListener('click', () => {
-    if (tagsArray?.length > 0) {
-      recipes = tagsSearch(recipes, tagsArray.flat());
-    }
-    const arrowBtn = input.children.item(1);
-    const arrowUp = document.querySelector('.fa-chevron-up');
-    if (arrowBtn.classList.contains('fa-chevron-down')) {
-      handleArrow(arrowBtn, `fa-chevron-down`, `fa-chevron-up`);
-      arrowUp ? handleArrow(arrowUp, `fa-chevron-up`, `fa-chevron-down`) : null;
-      setOptionList(recipes, category, tagsArray);
-      tagsArray.push(setTags(recipes, category, tagsArray));
-    } else {
-      handleArrow(arrowBtn, `fa-chevron-up`, `fa-chevron-down`);
-      closeOptionList(category);
-    }
-  });
+  input &&
+    input.addEventListener('click', () => {
+      if (tagsArray?.length > 0) {
+        recipes = tagsSearch(recipes, tagsArray.flat());
+      }
+      const arrowBtn = input.children.item(1);
+      const arrowUp = document.querySelector('.fa-chevron-up');
+      if (arrowBtn.classList.contains('fa-chevron-down')) {
+        handleArrow(arrowBtn, `fa-chevron-down`, `fa-chevron-up`);
+        arrowUp
+          ? handleArrow(arrowUp, `fa-chevron-up`, `fa-chevron-down`)
+          : null;
+        setOptionList(recipes, category, tagsArray);
+        tagsArray.push(setTags(recipes, category, tagsArray));
+      } else {
+        handleArrow(arrowBtn, `fa-chevron-up`, `fa-chevron-down`);
+        closeOptionList(category);
+      }
+    });
 };
 
 const searchSection = document.querySelector('.search-section');
