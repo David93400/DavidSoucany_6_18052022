@@ -12,7 +12,8 @@ export const tagsSearch = (recipes, tagsArray) => {
         normalizeText(recipe.name).includes(normalizeText(tag)) ||
         normalizeText(recipe.description).includes(normalizeText(tag)) ||
         recipe.ingredients.toString().includes(normalizeText(tag)) ||
-        normalizeText(recipe.appliance).includes(normalizeText(tag))
+        normalizeText(recipe.appliance).includes(normalizeText(tag)) ||
+        normalizeText(recipe.ustensils.toString()).includes(normalizeText(tag))
       ) {
         newRecipesList.push(recipe);
         filteredRecipes = uniqueArray(newRecipesList);
@@ -26,7 +27,10 @@ export const tagsSearch = (recipes, tagsArray) => {
           !normalizeText(recipe.name).includes(normalizeText(tag)) &&
           !normalizeText(recipe.description).includes(normalizeText(tag)) &&
           !recipe.ingredients.toString().includes(normalizeText(tag)) &&
-          !normalizeText(recipe.appliance).includes(normalizeText(tag))
+          !normalizeText(recipe.appliance).includes(normalizeText(tag)) &&
+          !normalizeText(recipe.ustensils.toString()).includes(
+            normalizeText(tag)
+          )
         ) {
           filteredRecipes.splice(filteredRecipes.indexOf(recipe), 1);
         }

@@ -49,11 +49,12 @@ const deleteTags = (recipes, tagsArray, type, e) => {
 
 const setTags = (recipes, type, tagsArray) => {
   const tagArray = [];
+  let filteredRecipesWithTags = [];
   const options = document.querySelectorAll(`.${type}-list-item`);
   options.forEach((option) => {
     option.addEventListener('click', () => {
       createTag(tagArray, option, type);
-      const filteredRecipesWithTags = tagsSearch(recipes, tagsArray.flat());
+      filteredRecipesWithTags = tagsSearch(recipes, tagsArray.flat());
       displayRecipes(filteredRecipesWithTags);
       return tagArray;
     });
@@ -63,7 +64,12 @@ const setTags = (recipes, type, tagsArray) => {
     const closeTag = document.querySelectorAll('.fa-circle-xmark');
     closeTag.forEach((tag) => {
       if (e.target === tag) {
-        tagsArray = deleteTags(recipes, tagsArray.flat(), type, e);
+        tagsArray = deleteTags(
+          closeTag.length === 1 ? recipes : filteredRecipesWithTags,
+          tagsArray.flat(),
+          type,
+          e
+        );
       }
     });
   });
