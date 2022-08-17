@@ -1,3 +1,4 @@
+import { recipesConstants } from '../constant';
 import { displayInputOption, displayRecipes } from '../pages/home';
 import { tagsSearch } from '../tagsSearch';
 import { cleanError, createGenericElement, normalizeText } from './helpers';
@@ -41,6 +42,7 @@ const deleteTags = (recipes, tagsArray, type, e) => {
     tagsArray.splice(tagsArray.indexOf(tagName), 1);
   e.target.parentElement.remove();
   const filteredRecipesWithTags = tagsSearch(recipes, tagsArray.flat());
+  displaySelectSection(recipesConstants, filteredRecipesWithTags, tagsArray);
   displayRecipes(filteredRecipesWithTags);
   return tagsArray;
 };
@@ -125,7 +127,6 @@ const searchOptionsByInput = (recipes, type, tagsArray) => {
   // cleaning option list & inputs
   input.addEventListener('click', () => {
     cleanError('.error');
-    document.querySelector('form').reset();
   });
   // listening to input
   input.addEventListener('input', (e) => {

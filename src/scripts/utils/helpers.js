@@ -17,6 +17,9 @@ const unsplashKey = process.env.UNSPLASH_KEY;
 async function searchUnsplash(searchQuery) {
   const endpoint = `https://api.unsplash.com/search/photos?query=${searchQuery}&client_id=${unsplashKey}`;
   try {
+    if (!unsplashKey) {
+      return './assets/images/missingApiKey.jpeg';
+    }
     const response = await fetch(endpoint);
     const responseData = await response.json();
     let url;

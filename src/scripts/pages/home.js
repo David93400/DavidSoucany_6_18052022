@@ -93,18 +93,19 @@ export default async function init() {
   let filteredRecipesWithInput;
   let filteredRecipesWithTags = [];
   const searchInput = document.querySelector('.search-bar');
-  // testing
-  const logo = document.querySelector('.logo');
-  logo.addEventListener('click', () => {
-    console.log(tagsArray.flat());
-  });
 
   searchInput.addEventListener('input', (e) => {
-    filteredRecipesWithInput = mainSearch(recipes, e.target.value);
-    // vérifier si tagsArray est vide, si oui, filtrer avec recipes et si non, filtrer avec filteredRecipesWithTags
-    filteredRecipesWithTags = tagsSearch(filteredRecipesWithInput, tagsArray);
-    displaySelectSection(recipesConstants, filteredRecipesWithTags);
-    displayRecipes(filteredRecipesWithTags);
+    if (tagsArray?.length > 0) {
+      filteredRecipesWithTags = tagsSearch(recipes, tagsArray.flat());
+      filteredRecipesWithInput = mainSearch(
+        filteredRecipesWithTags,
+        e.target.value
+      );
+    } else {
+      filteredRecipesWithInput = mainSearch(recipes, e.target.value);
+    }
+    displaySelectSection(recipesConstants, filteredRecipesWithInput, tagsArray);
+    displayRecipes(filteredRecipesWithInput);
   });
   if (!searchInput.value) {
     displaySelectSection(recipesConstants, recipes, tagsArray);
