@@ -68,7 +68,6 @@ export const toggleOptionList = (recipes, type, tagsArray) => {
         closeOptionList(category);
       }
     });
-  setTags(category);
 };
 
 const searchSection = document.querySelector('.search-section');
@@ -105,6 +104,7 @@ export default async function init() {
     } else {
       filteredRecipesWithInput = mainSearch(recipes, e.target.value);
     }
+    !filteredRecipesWithInput && (filteredRecipesWithInput = recipes);
     displaySelectSection(recipesConstants, filteredRecipesWithInput, tagsArray);
     displayRecipes(filteredRecipesWithInput);
   });

@@ -183,8 +183,6 @@ const searchOptionsByInput = (recipes, type, tagsArray) => {
 const setOptionList = (recipes, category) => {
   const container = document.querySelector(`.list-container`);
   container && container.remove();
-  const arrowDown = document.querySelector(`.${category}-chevron-down`);
-  arrowDown ? handleArrow(arrowDown, 'fa-chevron-down', 'fa-chevron-up') : null;
   const list = getTypeList(recipes, category);
   const listParent = document.querySelector(`.input-${category}-container`);
   const listContainer = createGenericElement(
